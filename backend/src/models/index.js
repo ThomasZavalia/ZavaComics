@@ -1,5 +1,5 @@
-const User = require("./user");
-const Comic = require("./comic");
+const User = require("./User");
+const Comic = require("./Comic");
 const Compra = require("./Compra");
 const Calificacion = require("./Calificacion");
 
