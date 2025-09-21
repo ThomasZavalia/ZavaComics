@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { User } = require("../models");
 
 module.exports = async (req,res,next)=>
     {
@@ -7,7 +8,7 @@ module.exports = async (req,res,next)=>
 
         try
         {
-            const decoded = jwt.verify(token.split("")[1],process.env.JWT_SECRET);
+            const decoded = jwt.verify(token.split(" ")[1],process.env.JWT_SECRET);
              const user = await User.findByPk(decoded.id);
              if (!user) 
                 {

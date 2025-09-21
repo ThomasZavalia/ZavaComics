@@ -1,11 +1,8 @@
 const app = require("./app");
 const sequelize = require("./config/db");
 
-require("./models/Comic");
-require("./models/Calificacion");
-require("./models/Compra");
-require("./models/User");
-require("./models/index");
+require("./models");
+
 
 const PORT = 3000;
 
