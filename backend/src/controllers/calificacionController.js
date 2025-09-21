@@ -1,7 +1,7 @@
-const {User,Comic,Califiacion}= require("../models");
+const {User,Comic,Calificacion}= require("../models");
 
 
-exports.calificarComic(req,res)
+exports.calificarComic = async (req,res)=>
 {
     try
     {
@@ -16,8 +16,8 @@ exports.calificarComic(req,res)
                 
             }
 
-            const usuario = User.findByPk(userId);
-            const comic = Comic.findByPk(comicId);
+            const usuario = await User.findByPk(userId);
+            const comic = await Comic.findByPk(comicId);
 
             if(!usuario || !comic)
                 {

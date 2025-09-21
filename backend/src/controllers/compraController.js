@@ -9,7 +9,7 @@ try
         const {numeroTarjeta,cvv}= req.body;
         const userId = req.userId;
 
-        if(!numeroTarjeta || cvv)
+        if(!numeroTarjeta || !cvv)
             {
                 return res.status(400).json({message:"Datos de pago incompletos"});
             }
@@ -27,7 +27,7 @@ try
 
     }
 
-    const yaComprado = await Compra.findOne({where:{userid,comicId}});
+    const yaComprado = await Compra.findOne({where:{UserId: userId, ComicId: comicId }});
     if(yaComprado)
         {
             return res.status(400).json({message:"Ya has comprado este comic"});
@@ -42,4 +42,28 @@ try
         res.status(500).json({error:err.message});
     } 
 
+};
+
+
+
+
+exports.obtenerBiblioteca = async (req, res) => {
+  try {
+    const userId = req.userId; 
+
+    const usuario = await User.findByPk(userId, {
+      include: {
+        model: Comic,
+        through: { attributes: ["fechaCompra", "monto"] }, 
+      },
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.json(usuario.Comics); 
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };

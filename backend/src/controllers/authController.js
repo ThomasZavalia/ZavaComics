@@ -36,7 +36,9 @@ exports.register=async (req,res)=>
                 const coincide = await bcrypt.compare(password,usuario.password);
                 if(!coincide){return res.status(400).json({message:"Credenciales invalidas"})};
 
-                const token = jwt.sign({id:usuario.id},process.env.JWT_SECRET,{expiresIn:"1d"});
+               const token = jwt.sign({ id: usuario.id, rol: usuario.rol }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+                
                 res.json({token});
 
             }catch(err)
