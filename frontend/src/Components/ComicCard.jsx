@@ -1,15 +1,15 @@
-import { Link } from "react-router-dom";
-
-function ComicCard({ comic }) {
+// components/ComicCard.jsx
+export default function ComicCard({ comic }) {
   return (
-    <div className="comic-card" style={{ border: "1px solid #ddd", padding: "10px", borderRadius: "8px" }}>
-      <img src={comic.cover} alt={comic.title} style={{ width: "150px", height: "220px" }} />
-      <h3>{comic.title}</h3>
-      <p>{comic.year}</p>
-      <p>⭐ {comic.rating}</p>
-      <Link to={`/comic/${comic.id}`}>Ver Detalles</Link>
+    <div className="comic-card">
+      <img
+        src={comic.portada}
+        alt={comic.titulo}
+        className="comic-cover"
+      />
+      <h3>{comic.titulo}</h3>
+      <p><strong>Autor:</strong> {comic.autor}</p>
+      <p><strong>Ilustrador:</strong> {comic.ilustrador}</p>
     </div>
   );
 }
-
-export default ComicCard;

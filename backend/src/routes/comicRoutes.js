@@ -26,5 +26,6 @@ router.get("/",comicController.obtenerTodos);
 router.post("/:id/calificar",authMiddleware,calificacionController.calificarComic);
 
 router.get("/:id/promedio",comicController.obtenerComicPromedio);
+router.get("/:id",comicController.obtenerComic);
 
 module.exports = router;

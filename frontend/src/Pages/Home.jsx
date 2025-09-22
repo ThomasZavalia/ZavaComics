@@ -3,27 +3,29 @@
 }*/
 
 import { useEffect, useState } from "react";
-import { ComicService } from "../Services/ComicService";
-import ComicList from "../Components/ComicList";
+import { getComics } from "../services/comicService";
+import ComicCard from "../components/ComicCard";
 
-function Home() {
+export default function Home() {
   const [comics, setComics] = useState([]);
 
   useEffect(() => {
     const fetchComics = async () => {
-      const data = await ComicService.getAllComics();
-      setComics(data);
+      try {
+        const data = await getComics();
+        setComics(data);
+      } catch (err) {
+        console.error("Error al traer los cómics", err);
+      }
     };
     fetchComics();
   }, []);
 
   return (
-    <div>
-      <h1>Todos los Comics</h1>
-      <ComicList comics={comics} />
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
+      {comics.map((comic) => (
+        <ComicCard key={comic.id} comic={comic} />
+      ))}
     </div>
   );
 }
-
-export default Home;
-

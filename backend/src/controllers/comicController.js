@@ -96,5 +96,20 @@ exports.crearComic = async (req,res)=>
 
 
     }
+
+    exports.obtenerComic = async (req,res)=>
+        {
+            try {
+    const { id } = req.params;
+    const comic = await Comic.findByPk(id);
+if (!comic) {
+      return res.status(404).json({ message: "Comic no encontrado" });
+    }
+    res.json(comic);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener comic", error });
+  }
+};
+        
     
             

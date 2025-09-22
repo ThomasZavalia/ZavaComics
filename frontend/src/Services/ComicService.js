@@ -1,16 +1,13 @@
-// cuando zavalia termine el backend esto se reemplazara con las API calls
-const mockComics = [
-  { id: 1, title: "Batman: Damned", year: 2018, rating: 4.2, cover: "/batman_damned.jpg" },
-  { id: 2, title: "Superman: Legacy", year: 2023, rating: 5, cover: "/superman_legacy.jpg" },
-  { id: 3, title: "Amazing Spider-Man", year: 2023, rating: 5, cover: "/amazing_spider_man.jpg" }
-];
+import api from "./api";
 
-export const ComicService = {
-  getAllComics: async () => {
-    return mockComics; // despues API call
-  },
+// Traer todos los cómics
+export const getComics = async () => {
+  const res = await api.get("/comics");
+  return res.data;
+};
 
-  getComicById: async (id) => {
-    return mockComics.find(c => c.id === Number(id)); // despues API call
-  }
+
+ export const getComicById = async (id) => {
+  const res = await api.get(`/comics/${id}`);
+  return res.data;
 };

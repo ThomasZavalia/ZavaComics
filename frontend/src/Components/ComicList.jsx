@@ -1,11 +1,12 @@
-import ComicCard from "./ComicCard";
+// components/ComicList.jsx
+import ComicCard from "./ComiCard";
 
-function ComicList({ comics }) {
+export default function ComicList({ comics }) {
   return (
-    <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-      {comics.map(c => <ComicCard key={c.id} comic={c} />)}
+    <div className="comic-grid">
+      {comics.map((comic) => (
+        <ComicCard key={comic.id} comic={comic} />
+      ))}
     </div>
   );
 }
-
-export default ComicList;
