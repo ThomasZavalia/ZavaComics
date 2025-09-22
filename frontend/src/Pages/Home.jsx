@@ -18,7 +18,7 @@ function Home() {
   }, []);
 
   return (
-    <div>
+    <div className="page">
       <h1>Todos los Comics</h1>
       <ComicList comics={comics} />
     </div>

@@ -40,3 +40,40 @@
 .read-the-docs {
   color: #888;
 }
+
+
+
+
+
+
+
+
+
+
+/* ComicCard styles */
+.comic-card {
+  border: 1px solid #333;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #1a1a1a; /* dark mode feel */
+  color: white;
+}
+
+.comic-card img {
+  width: 150px;
+  height: 220px;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect */
+.comic-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.comic-card:hover img {
+  transform: scale(1.08);
+}
