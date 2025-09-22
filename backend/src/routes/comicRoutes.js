@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const comicController = require("../controllers/comicController");
+const calificacionController = require("../controllers/calificacionController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const roleMiddleware = require("../middlewares/roleMiddleware");
 
@@ -21,5 +22,9 @@ router.delete
 );
 
 router.get("/",comicController.obtenerTodos);
+
+router.post("/:id/calificar",authMiddleware,calificacionController.calificarComic);
+
+router.get("/:id/promedio",comicController.obtenerComicPromedio);
 
 module.exports = router;

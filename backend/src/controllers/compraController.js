@@ -34,7 +34,7 @@ try
         }
 
         const monto = comic.precio;
-        const comprado = await Compra.create({userId,comicId,monto});
+        const comprado = await Compra.create({UserId:userId,ComicId:comicId,monto});
         res.json({message:"Compra realizada con exito (simulada)",comprado,paymentStatus:"Aprobado"});
 
     }catch(err)

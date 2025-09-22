@@ -6,10 +6,17 @@ exports.calificarComic = async (req,res)=>
     try
     {
         const {comicId} = req.params;
-        const puntuacion = req.body;
+        let {puntuacion }= req.body;
         const userId = req.userId;
+        puntuacion = parseInt(puntuacion,10);
+        console.log("Body recibido",req.body);
+        console.log("Tipo de puntuacion",typeof req.body.puntuacion);
+       
 
-        if(puntuacion<1 || puntuacion>5)
+    
+    
+
+        if(puntuacion<1 || puntuacion >5)
             {
                 return res.status(400).json({error:"La puntuacion debe ser entre 1 y 5"});
 
@@ -24,7 +31,7 @@ exports.calificarComic = async (req,res)=>
                     return res.status(404).json({error:"Usuario o comic no encontrado"});
                 }
 
-                await Califiacion.upsert({
+                await Calificacion.upsert({
                     UserId:userId,
                     ComicId:comicId,
                     puntuacion,
@@ -37,4 +44,6 @@ exports.calificarComic = async (req,res)=>
     {
         res.status(500).json({error:err.message});
     }
+
+
 }

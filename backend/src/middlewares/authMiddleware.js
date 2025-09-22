@@ -15,7 +15,7 @@ module.exports = async (req,res,next)=>
                 return res.status(401).json({ message: "Usuario no encontrado" });
                 }
             req.userId = decoded.id;
-            req.userRole = user.role;
+        req.userRole = user.role || decoded.rol;
             next();
         
         }catch(err)

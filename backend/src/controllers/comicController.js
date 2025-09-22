@@ -69,7 +69,8 @@ exports.crearComic = async (req,res)=>
             {
                 try
                 {
-                    const {id}= req.params;
+                   const {id} = req.params;
+                    console.log("id:",id);
                     const comic = await Comic.findByPk(id,{
 
                         include:{
@@ -95,4 +96,5 @@ exports.crearComic = async (req,res)=>
 
 
     }
+    
             
