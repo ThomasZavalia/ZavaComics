@@ -1,0 +1,20 @@
+// src/services/authService.js
+import api from "./Api";
+
+export const register = async (userData) => {
+  const res = await api.post("/auth/register", userData);
+  return res.data;
+};
+
+export const login = async (credentials) => {
+  const res = await api.post("/auth/login", credentials);
+  // Guardar token
+  if (res.data.token) {
+    localStorage.setItem("token", res.data.token);
+  }
+  return res.data;
+};
+
+export const logout = () => {
+  localStorage.removeItem("token");
+};
