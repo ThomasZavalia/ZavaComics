@@ -63,6 +63,7 @@ export default Login;
 import * as React from "react";
 import { useState } from "react";
 import { useAuth } from "../Hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -109,6 +110,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -118,8 +120,9 @@ export default function Login() {
     try {
       await login({ email, password });
       alert("Login exitoso"); // luego podrías redirigir a /home
+      navigate('/');
     } catch (err) {
-      console.error(err);
+      console.error("Error en login:", err);
       setErrorMessage("Correo o contraseña incorrectos");
     }
 

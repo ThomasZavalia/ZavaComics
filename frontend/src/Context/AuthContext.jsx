@@ -19,26 +19,39 @@ export const AuthProvider = ({ children }) => {
     const data = await loginService(credentials); // { token }
 
     if (!data || !data.token) throw new Error("Login fallido");
+     localStorage.setItem('token', data.token);
+
 
     const userDecoded = decodeJWT(data.token);
     if (!userDecoded) throw new Error("Token inválido");
 
-    setUser({
-      id: userDecoded.id,
-      nombre: userDecoded.nombre,
-      role: userDecoded.role,
-    });
+    try {
+      const userData = await getMe();
+      setUser ({
+        id: userData.id,
+        nombre: userData.nombre,
+        role: userData.rol, // 👈 Usa 'rol' del DB
+      });
+    } catch (err) {
+      // Fallback a decoded si fetch falla
+      setUser ({
+        id: userDecoded.id,
+        nombre: '', // O fetch separado si necesitas
+        role: userDecoded.rol,
+      });
+    }
   };
 
   const register = async (userData) => {
   const data = await registerService(userData); // { id, nombre, email, rol }
 
   if (!data || !data.id) throw new Error("Registro fallido");
+  await login({ email: userData.email, password: userData.password });
 
   setUser({
     id: data.id,
     nombre: data.nombre,
-    role: data.rol,
+    rol: data.rol,
   });
 };
 
