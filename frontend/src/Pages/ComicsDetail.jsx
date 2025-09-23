@@ -64,8 +64,9 @@ export default function ComicsDetail() {
   };
 
   const handleLeer = () => {
-    navigate(`/leer/${comic.id}`);
-  };
+  if (!isComprado) return alert("Debes comprar el comic primero");
+  navigate("/leer", { state: { cbzFile: comic.urlLectura } });
+};
 
   return (
     <div className="container mx-auto px-6 py-8">

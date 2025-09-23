@@ -22,10 +22,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/admin" element={<AdminPanel />} />
- <Route
-  path="/leer/:id"
-  element={<ComicReaderWrapper />}
-/>
+        <Route path="/leer" element={<ComicReaderWrapper />} />
       </Routes>
     </>
   );
