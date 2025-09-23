@@ -3,8 +3,8 @@
 }*/
 
 import { useEffect, useState } from "react";
-import { getComics } from "../services/comicService";
-import ComicCard from "../components/ComicCard";
+import { getComics } from "../Services/ComicService";
+import ComicCard from "../Components/ComicCard";
 
 export default function Home() {
   const [comics, setComics] = useState([]);

@@ -11,3 +11,4 @@ export const getComics = async () => {
   const res = await api.get(`/comics/${id}`);
   return res.data;
 };
+

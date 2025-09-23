@@ -1,5 +1,5 @@
 // src/services/authService.js
-import api from "./Api";
+import api from "./api";
 
 export const register = async (userData) => {
   const res = await api.post("/auth/register", userData);
