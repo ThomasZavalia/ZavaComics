@@ -1,125 +1,4 @@
-/*
 
-import { useEffect, useState } from "react";
-import JSZip from "jszip";
-
-export default function ComicReader({ file }) {
-  const [pages, setPages] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const loadCBZ = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const zip = new JSZip();
-        const response = await fetch(file);
-        if (!response.ok) {
-          throw new Error(`Archivo no encontrado: ${response.status} ${response.statusText}. Verifica la ruta: ${file}`);
-        }
-        const data = await response.arrayBuffer();
-        const zipContent = await zip.loadAsync(data);
-
-        const imageFiles = Object.keys(zipContent.files)
-          .filter(name => /\.(jpe?g|png)$/i.test(name)) // Filtra JPG/PNG
-          .sort((a, b) => {
-            // Orden numérico: extrae números de nombres como "pagina_001.jpg"
-            const numA = parseInt(a.match(/\d+/)?.[0] || 0);
-            const numB = parseInt(b.match(/\d+/)?.[0] || 0);
-            return numA - numB;
-          });
-
-        if (imageFiles.length === 0) {
-          throw new Error("No se encontraron imágenes en el CBZ. Verifica el contenido del archivo.");
-        }
-
-        const images = await Promise.all(
-          imageFiles.map(async (name) => {
-            const base64 = await zipContent.files[name].async("base64");
-            // Detecta tipo MIME basado en extensión
-            const ext = name.toLowerCase();
-            const mimeType = ext.endsWith('.jpg') || ext.endsWith('.jpeg') ? 'image/jpeg' : 'image/png';
-            return `data:${mimeType};base64,${base64}`;
-          })
-        );
-
-        setPages(images);
-        setCurrentPage(0);
-      } catch (err) {
-        console.error("Error cargando CBZ:", err);
-        setError(err.message);
-        setPages([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (file) {
-      loadCBZ();
-    }
-  }, [file]);
-
-  const nextPage = () => {
-    if (currentPage < pages.length - 1) setCurrentPage(currentPage + 1);
-  };
-  const prevPage = () => {
-    if (currentPage > 0) setCurrentPage(currentPage - 1);
-  };
-
-  if (loading) return <p className="text-center mt-10 text-white">Cargando cómic... (puede tardar unos segundos)</p>;
-
-  if (error) return (
-    <div className="text-center mt-10 text-red-400">
-      <p>Error: {error}</p>
-      <button 
-        onClick={() => window.history.back()} 
-        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
-      >
-        Volver
-      </button>
-    </div>
-  );
-
-  if (!pages.length) return <p className="text-center mt-10 text-white">No hay páginas para mostrar.</p>;
-
-  return (
-    <div style={{ textAlign: "center", padding: "20px", background: "black", minHeight: "100vh" }}>
-      <img
-        src={pages[currentPage]}
-        alt={`Página ${currentPage + 1}`}
-        style={{ maxWidth: "80%", maxHeight: "80vh", objectFit: "contain", margin: "20px 0" }}
-        onError={(e) => console.error("Error cargando imagen:", e)} // Debug
-      />
-      <div style={{ marginTop: "10px", color: "white" }}>
-        <button 
-          onClick={prevPage} 
-          disabled={currentPage === 0}
-          style={{ margin: "0 10px", padding: "10px", background: currentPage === 0 ? "gray" : "blue" }}
-        >
-          Anterior
-        </button>
-        <span style={{ margin: "0 15px", fontSize: "18px", fontWeight: "bold" }}>
-          {currentPage + 1} / {pages.length}
-        </span>
-        <button 
-          onClick={nextPage} 
-          disabled={currentPage === pages.length - 1}
-          style={{ margin: "0 10px", padding: "10px", background: currentPage === pages.length - 1 ? "gray" : "blue" }}
-        >
-          Siguiente
-        </button>
-        <button 
-          onClick={() => window.history.back()} 
-          style={{ marginLeft: "20px", padding: "10px", background: "red", color: "white" }}
-        >
-          Cerrar
-        </button>
-      </div>
-    </div>
-  );
-}*/
 
 
 import { useEffect, useState } from "react";
@@ -217,7 +96,7 @@ export default function ComicReader({ file }) {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
   };
 
-  // 👈 NUEVO: Función para cerrar (usa history.back o prop onClose si la agregas)
+  // Función para cerrar (usa history.back o prop onClose si la agregas)
   const handleClose = () => {
     window.history.back(); // O window.close() si es popup, o prop onClose
   };
@@ -255,7 +134,7 @@ export default function ComicReader({ file }) {
     </div>
   );
 
-  // 👈 LAYOUT MEJORADO: Full-screen centrado con Flexbox
+  
   return (
     <div style={{ 
       position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', 
@@ -285,11 +164,11 @@ export default function ComicReader({ file }) {
           src={pages[currentPage]}
           alt={`Página ${currentPage + 1}`}
           style={{ 
-            maxWidth: '90vw', maxHeight: '90vh', // Más grande: usa casi todo el viewport
-            width: 'auto', height: 'auto', // Mantiene proporción
-            objectFit: 'contain', // Escala sin distorsionar
-            boxShadow: '0 4px 8px rgba(0,0,0,0.5)', // Sombra sutil para "pop"
-            borderRadius: '8px' // Bordes redondeados opcionales
+            maxWidth: '90vw', maxHeight: '90vh', 
+            width: 'auto', height: 'auto', // Mantiene proporcion
+            objectFit: 'contain',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.5)', 
+            borderRadius: '8px' 
           }}
           onError={(e) => console.error("Error cargando imagen:", e)}
         />
@@ -299,7 +178,7 @@ export default function ComicReader({ file }) {
       <div style={{ 
         padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center', 
         gap: '20px', background: 'rgba(0, 0, 0, 0.7)', width: '100%', 
-        flexShrink: 0 // No se encoge
+        flexShrink: 0 
       }}>
         <button 
           onClick={prevPage} 

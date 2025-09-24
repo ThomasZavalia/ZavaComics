@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom"; // 👈 Agregado para leer query
+import { useSearchParams } from "react-router-dom";
 import { useAuth } from "../Hooks/useAuth";
 import { getComics, createComic } from "../Services/ComicService";
 import ComicCard from "../Components/ComicCard";
@@ -9,19 +9,19 @@ export default function Home() {
   const { user } = useAuth();
   const isAdmin = user && user.role === 'admin';
 
-  const [searchParams] = useSearchParams(); // 👈 Lee query ?q=...
-  const query = searchParams.get('q') || ''; // 👈 Query de búsqueda
+  const [searchParams] = useSearchParams(); //  Lee query ?q=...
+  const query = searchParams.get('q') || ''; // Query de búsqueda
 
   const [comics, setComics] = useState([]);
   const [filteredComics, setFilteredComics] = useState([]); // 👈 Lista filtrada
 
-  // Estados para modal de agregar (sin cambios)
+  // Estados para modal de agregar 
   const [openAddModal, setOpenAddModal] = useState(false);
   const [addForm, setAddForm] = useState({
   titulo: '', 
   escritor: '', 
   ilustrador: '', 
-  editorial: '', // 👈 NUEVO: Campo editorial
+  editorial: '', 
   sinopsis: '', 
   precio: '', 
   portada: '', 
@@ -42,7 +42,7 @@ export default function Home() {
     fetchComics();
   }, []);
 
-  // 👈 NUEVO: Filtrar cómics por título (onChange de query o al cargar)
+  // Filtrar cómics por título (onChange de query o al cargar)
   useEffect(() => {
     if (query) {
       const lowerQuery = query.toLowerCase();
@@ -54,9 +54,9 @@ export default function Home() {
     } else {
       setFilteredComics(comics); // Muestra todos si no hay query
     }
-  }, [comics, query]); // 👈 Re-filtra si cambian cómics o query
+  }, [comics, query]); // Re-filtra si cambian cómics o query
 
-  // Handlers para modal agregar (sin cambios)
+  // Handlers para modal agregar
   const handleAddChange = (e) => {
     setAddForm({ ...addForm, [e.target.name]: e.target.value });
   };
@@ -65,7 +65,7 @@ const handleAddSubmit = async () => {
   setAddLoading(true);
   setAddError('');
   try {
-    await createComic(addForm); // 👈 Envía todo, incluyendo editorial
+    await createComic(addForm); 
     alert('Cómic agregado exitosamente');
     setOpenAddModal(false);
     setAddForm({ 
@@ -85,7 +85,7 @@ const handleAddSubmit = async () => {
 
   return (
     <div className="p-6">
-      {/* Botón agregar para admin (sin cambios) */}
+ 
       {isAdmin && (
         <div className="flex justify-center mb-6">
           <Button
@@ -99,14 +99,14 @@ const handleAddSubmit = async () => {
         </div>
       )}
 
-      {/* 👈 MENSAJE SI HAY BÚSQUEDA */}
+    
       {query && (
         <div className="text-center mb-4">
           <p className="text-gray-600">Mostrando resultados para: "{query}" ({displayComics.length} cómics)</p>
         </div>
       )}
 
-      {/* Modal agregar (sin cambios) */}
+      {/* Modal agregar */}
       <Dialog open={openAddModal} onClose={() => setOpenAddModal(false)} maxWidth="sm" fullWidth>
   <DialogTitle>Agregar Nuevo Cómic</DialogTitle>
   <DialogContent>
@@ -115,7 +115,7 @@ const handleAddSubmit = async () => {
       <TextField label="Título" name="titulo" value={addForm.titulo} onChange={handleAddChange} fullWidth required />
       <TextField label="Escritor" name="escritor" value={addForm.escritor} onChange={handleAddChange} fullWidth required />
       <TextField label="Ilustrador" name="ilustrador" value={addForm.ilustrador} onChange={handleAddChange} fullWidth required />
-      {/* 👈 NUEVO: Campo Editorial */}
+      
       <TextField label="Editorial" name="editorial" value={addForm.editorial} onChange={handleAddChange} fullWidth />
       <TextField label="Sinopsis" name="sinopsis" value={addForm.sinopsis} onChange={handleAddChange} multiline rows={3} fullWidth required />
       <TextField label="Precio" name="precio" type="number" value={addForm.precio} onChange={handleAddChange} fullWidth required />
@@ -137,7 +137,7 @@ const handleAddSubmit = async () => {
       ))}
     </div>
 
-      {/* Si no hay resultados */}
+      
       {query && displayComics.length === 0 && (
         <div className="text-center mt-8">
           <p className="text-gray-500">No se encontraron cómics con "{query}". Intenta otra búsqueda.</p>

@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getComicById, updateComic, deleteComic } from "../Services/ComicService"; // 👈 Agregado updateComic, deleteComic
+import { getComicById, updateComic, deleteComic } from "../Services/ComicService"; 
 import api from "../Services/api";
 import { useAuth } from "../Hooks/useAuth";
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, CircularProgress, Alert } from "@mui/material"; // 👈 Agregado para modales
@@ -12,7 +12,7 @@ export default function ComicsDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const isAdmin = user && user.role === 'admin'; // 👈 Agregado chequeo admin
+  const isAdmin = user && user.role === 'admin'; 
 
   console.log("DEBUG Detail - User:", user);
 console.log("DEBUG Detail - isAdmin:", isAdmin);
@@ -35,7 +35,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
       const data = await getComicById(id);
       setComic(data);
 
-      // Verificamos si el usuario tiene el cómic comprado
+      // Verificamos si el usuario tiene el comic comprado
       if (user) {
         try {
           const res = await api.get("/compras/my"); // devuelve los comics comprados
@@ -53,7 +53,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
 
   if (!comic) return <p className="text-center mt-10">Cargando...</p>;
 
-  // 👈 Handlers para editar
+  // Handlers para editar
  const handleEditOpen = () => {
   setEditForm({
     titulo: comic.titulo,
@@ -88,7 +88,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
     setEditLoading(false);
   };
 
-  // 👈 Handler para eliminar
+  // Handler para eliminar
   const handleDelete = async () => {
     setDeleteLoading(true);
     try {
@@ -151,12 +151,12 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
           <span className="font-semibold">Editorial:</span> {comic.editorial || 'No especificada'}
         </p>
         
-        {/* 👈 SINOPSIS MEJORADA: Más grande, espaciada y con margen abajo */}
+        
         <p className="text-sm text-gray-300 leading-relaxed mb-6"> {/* 👈 CAMBIOS: text-sm (más grande), leading-relaxed (interlineado lindo), mb-6 (espacio antes de botones) */}
           {comic.sinopsis}
         </p>
 
-        {/* 👈 BOTONES: Agregado margen superior para separar de sinopsis */}
+      
         <div className="flex flex-wrap gap-2 items-center mt-6"> {/* 👈 CAMBIO: Agregado mt-6 para espaciado */}
           {isComprado ? (
             <Button
@@ -191,7 +191,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
             </Button>
           )}
 
-          {/* BOTONES ADMIN SOLO SI ES ADMIN (sin cambios) */}
+          {/* BOTONES ADMIN SOLO SI ES ADMIN  */}
           {isAdmin && (
             <>
               <Button
@@ -216,7 +216,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
       </div>
     </div>
 
-    {/* MODAL PARA EDITAR (sin cambios) */}
+    {/* MODAL PARA EDITAR  */}
    <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)} maxWidth="sm" fullWidth>
       <DialogTitle>Editar Cómic</DialogTitle>
       <DialogContent>
@@ -241,7 +241,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
       </DialogActions>
     </Dialog>
 
-    {/* MODAL PARA CONFIRMAR ELIMINAR (sin cambios) */}
+    {/* MODAL PARA CONFIRMAR ELIMINAR  */}
     <Dialog open={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
       <DialogTitle>¿Estás seguro de eliminar "{comic.titulo}"?</DialogTitle>
       <DialogContent>

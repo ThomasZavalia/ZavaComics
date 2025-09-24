@@ -13,11 +13,11 @@ export const getComics = async () => {
 };
 
 export const createComic = async (comicData) => {
-  const res = await api.post('/comics', comicData); // Usa auth/rol middleware en backend
+  const res = await api.post('/comics', comicData); 
   return res.data;
 };
 export const updateComic = async (id, comicData) => {
-  const res = await api.put(`/comics/${id}`, comicData); // O patch si prefieres
+  const res = await api.put(`/comics/${id}`, comicData); 
   return res.data;
 };
 export const deleteComic = async (id) => {
