@@ -256,120 +256,124 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
     navigate("/leer", { state: { cbzFile: comic.urlLectura } });
   };
 
-  return (
-    <div className="container mx-auto px-6 py-8">
-      <div className="flex flex-col md:flex-row items-start gap-6">
-        <img
-          src={comic.portada}
-          alt={comic.titulo}
-          className="w-full md:w-1/3 h-auto rounded-lg shadow-lg"
-        />
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold mb-2">{comic.titulo}</h1>
-          <p className="text-gray-700 mb-2">
-            <span className="font-semibold">Escritor:</span> {comic.escritor}
-          </p>
-          <p className="text-gray-700 mb-2">
-            <span className="font-semibold">Ilustrador:</span> {comic.ilustrador}
-          </p>
-          <p className="text-gray-600 mb-6">{comic.sinopsis}</p>
+ return (
+  <div className="container mx-auto px-6 py-8">
+    <div className="flex flex-col md:flex-row items-start gap-6">
+      <img
+        src={comic.portada}
+        alt={comic.titulo}
+        className="w-full md:w-1/3 h-auto rounded-lg shadow-lg"
+      />
+      <div className="flex-1">
+        <h1 className="text-3xl font-bold mb-2">{comic.titulo}</h1>
+        <p className="text-gray-300 mb-2">
+          <span className="font-semibold">Escritor:</span> {comic.escritor}
+        </p>
+        <p className="text-gray-300 mb-2">
+          <span className="font-semibold">Ilustrador:</span> {comic.ilustrador}
+        </p>
+        
+        {/* 👈 SINOPSIS MEJORADA: Más grande, espaciada y con margen abajo */}
+        <p className="text-sm text-gray-300 leading-relaxed mb-6"> {/* 👈 CAMBIOS: text-sm (más grande), leading-relaxed (interlineado lindo), mb-6 (espacio antes de botones) */}
+          {comic.sinopsis}
+        </p>
 
-          {/* 👈 BOTONES PRINCIPALES + ADMIN (en div flex para alinear) */}
-          <div className="flex flex-wrap gap-2 items-center">
-            {isComprado ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleLeer}
-                sx={{
-                  py: 1.5,
-                  px: 4,
-                  fontWeight: "bold",
-                  transition: "all 0.3s",
-                  "&:hover": { transform: "scale(1.05)" },
-                }}
-              >
-                Leer
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleComprar}
-                disabled={loading}
-                sx={{
-                  py: 1.5,
-                  px: 4,
-                  fontWeight: "bold",
-                  transition: "all 0.3s",
-                  "&:hover": { transform: "scale(1.05)" },
-                }}
-              >
-                {loading ? "Comprando..." : `Comprar $${comic.precio}`}
-              </Button>
-            )}
+        {/* 👈 BOTONES: Agregado margen superior para separar de sinopsis */}
+        <div className="flex flex-wrap gap-2 items-center mt-6"> {/* 👈 CAMBIO: Agregado mt-6 para espaciado */}
+          {isComprado ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleLeer}
+              sx={{
+                py: 1.5,
+                px: 4,
+                fontWeight: "bold",
+                transition: "all 0.3s",
+                "&:hover": { transform: "scale(1.05)" },
+              }}
+            >
+              Leer
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleComprar}
+              disabled={loading}
+              sx={{
+                py: 1.5,
+                px: 4,
+                fontWeight: "bold",
+                transition: "all 0.3s",
+                "&:hover": { transform: "scale(1.05)" },
+              }}
+            >
+              {loading ? "Comprando..." : `Comprar $${comic.precio}`}
+            </Button>
+          )}
 
-            {/* 👈 BOTONES ADMIN SOLO SI ES ADMIN */}
-            {isAdmin && (
-              <>
-                <Button
-                  variant="outlined"
-                  color="warning"
-                  onClick={handleEditOpen}
-                  sx={{ py: 1.5, px: 4, fontWeight: 'bold' }}
-                >
-                  Editar
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => setOpenDeleteModal(true)}
-                  sx={{ py: 1.5, px: 4, fontWeight: 'bold' }}
-                >
-                  Eliminar
-                </Button>
-              </>
-            )}
-          </div>
+          {/* BOTONES ADMIN SOLO SI ES ADMIN (sin cambios) */}
+          {isAdmin && (
+            <>
+              <Button
+                variant="outlined"
+                color="warning"
+                onClick={handleEditOpen}
+                sx={{ py: 1.5, px: 4, fontWeight: 'bold' }}
+              >
+                Editar
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => setOpenDeleteModal(true)}
+                sx={{ py: 1.5, px: 4, fontWeight: 'bold' }}
+              >
+                Eliminar
+              </Button>
+            </>
+          )}
         </div>
       </div>
-
-      {/* 👈 MODAL PARA EDITAR */}
-      <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Editar Cómic</DialogTitle>
-        <DialogContent>
-          {editError && <Alert severity="error" sx={{ mb: 2 }}>{editError}</Alert>}
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
-            <TextField label="Título" name="titulo" value={editForm.titulo || ''} onChange={handleEditChange} fullWidth required />
-            <TextField label="Escritor" name="escritor" value={editForm.escritor || ''} onChange={handleEditChange} fullWidth required />
-            <TextField label="Ilustrador" name="ilustrador" value={editForm.ilustrador || ''} onChange={handleEditChange} fullWidth required />
-            <TextField label="Sinopsis" name="sinopsis" value={editForm.sinopsis || ''} onChange={handleEditChange} multiline rows={3} fullWidth required />
-            <TextField label="Precio" name="precio" type="number" value={editForm.precio || ''} onChange={handleEditChange} fullWidth required />
-            <TextField label="URL Portada" name="portada" value={editForm.portada || ''} onChange={handleEditChange} fullWidth required />
-            <TextField label="URL Lectura" name="urlLectura" value={editForm.urlLectura || ''} onChange={handleEditChange} fullWidth required />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenEditModal(false)}>Cancelar</Button>
-          <Button onClick={handleEditSubmit} variant="contained" disabled={editLoading}>
-            {editLoading ? <CircularProgress size={24} /> : 'Guardar'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* 👈 MODAL PARA CONFIRMAR ELIMINAR */}
-      <Dialog open={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
-        <DialogTitle>¿Estás seguro de eliminar "{comic.titulo}"?</DialogTitle>
-        <DialogContent>
-          <p>Esta acción no se puede deshacer.</p>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDeleteModal(false)}>Cancelar</Button>
-          <Button onClick={handleDelete} variant="contained" color="error" disabled={deleteLoading}>
-            {deleteLoading ? <CircularProgress size={24} /> : 'Eliminar'}
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
-  );
+
+    {/* MODAL PARA EDITAR (sin cambios) */}
+    <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)} maxWidth="sm" fullWidth>
+      <DialogTitle>Editar Cómic</DialogTitle>
+      <DialogContent>
+        {editError && <Alert severity="error" sx={{ mb: 2 }}>{editError}</Alert>}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+          <TextField label="Título" name="titulo" value={editForm.titulo || ''} onChange={handleEditChange} fullWidth required />
+          <TextField label="Escritor" name="escritor" value={editForm.escritor || ''} onChange={handleEditChange} fullWidth required />
+          <TextField label="Ilustrador" name="ilustrador" value={editForm.ilustrador || ''} onChange={handleEditChange} fullWidth required />
+          <TextField label="Sinopsis" name="sinopsis" value={editForm.sinopsis || ''} onChange={handleEditChange} multiline rows={3} fullWidth required />
+          <TextField label="Precio" name="precio" type="number" value={editForm.precio || ''} onChange={handleEditChange} fullWidth required />
+          <TextField label="URL Portada" name="portada" value={editForm.portada || ''} onChange={handleEditChange} fullWidth required />
+          <TextField label="URL Lectura" name="urlLectura" value={editForm.urlLectura || ''} onChange={handleEditChange} fullWidth required />
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setOpenEditModal(false)}>Cancelar</Button>
+        <Button onClick={handleEditSubmit} variant="contained" disabled={editLoading}>
+          {editLoading ? <CircularProgress size={24} /> : 'Guardar'}
+        </Button>
+      </DialogActions>
+    </Dialog>
+
+    {/* MODAL PARA CONFIRMAR ELIMINAR (sin cambios) */}
+    <Dialog open={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
+      <DialogTitle>¿Estás seguro de eliminar "{comic.titulo}"?</DialogTitle>
+      <DialogContent>
+        <p>Esta acción no se puede deshacer.</p>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setOpenDeleteModal(false)}>Cancelar</Button>
+        <Button onClick={handleDelete} variant="contained" color="error" disabled={deleteLoading}>
+          {deleteLoading ? <CircularProgress size={24} /> : 'Eliminar'}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  </div>
+);
 }

@@ -1,49 +1,21 @@
-/*
-
 import { useEffect, useState } from "react";
-import { getComics } from "../Services/ComicService";
+import { useSearchParams } from "react-router-dom"; // 👈 Agregado para leer query
+import { useAuth } from "../Hooks/useAuth";
+import { getComics, createComic } from "../Services/ComicService";
 import ComicCard from "../Components/ComicCard";
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, CircularProgress, Alert } from "@mui/material";
 
 export default function Home() {
-  const [comics, setComics] = useState([]);
+  const { user } = useAuth();
+  const isAdmin = user && user.role === 'admin';
 
-  useEffect(() => {
-    const fetchComics = async () => {
-      try {
-        const data = await getComics();
-        setComics(data);
-      } catch (err) {
-        console.error("Error al traer los cómics", err);
-      }
-    };
-    fetchComics();
-  }, []);
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
-      {comics.map((comic) => (
-        <ComicCard key={comic.id} comic={comic} />
-      ))}
-    </div>
-  );
-}*/
-
-import { useEffect, useState } from "react";
-import { useAuth } from "../Hooks/useAuth"; // 👈 Agregado para chequear admin
-import { getComics, createComic } from "../Services/ComicService"; // 👈 Agregado createComic
-import ComicCard from "../Components/ComicCard";
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, CircularProgress, Alert } from "@mui/material"; // 👈 Agregado para modal
-
-export default function Home() {
-  const { user } = useAuth(); // 👈 Agregado
-  const isAdmin = user && user.role === 'admin'; // 👈 Chequeo admin
-
-  console.log("DEBUG Home - User:", user); // 👈 Debe mostrar {id, nombre, role: 'admin'}
-console.log("DEBUG Home - isAdmin:", isAdmin);
+  const [searchParams] = useSearchParams(); // 👈 Lee query ?q=...
+  const query = searchParams.get('q') || ''; // 👈 Query de búsqueda
 
   const [comics, setComics] = useState([]);
+  const [filteredComics, setFilteredComics] = useState([]); // 👈 Lista filtrada
 
-  // 👈 Estados para modal de agregar
+  // Estados para modal de agregar (sin cambios)
   const [openAddModal, setOpenAddModal] = useState(false);
   const [addForm, setAddForm] = useState({
     titulo: '', escritor: '', ilustrador: '', sinopsis: '', precio: '', portada: '', urlLectura: ''
@@ -63,7 +35,21 @@ console.log("DEBUG Home - isAdmin:", isAdmin);
     fetchComics();
   }, []);
 
-  // 👈 Handlers para modal agregar
+  // 👈 NUEVO: Filtrar cómics por título (onChange de query o al cargar)
+  useEffect(() => {
+    if (query) {
+      const lowerQuery = query.toLowerCase();
+      const filtered = comics.filter(comic =>
+        comic.titulo.toLowerCase().includes(lowerQuery) // 👈 Filtra por título (case insensitive)
+      );
+      setFilteredComics(filtered);
+      console.log(`DEBUG Búsqueda: "${query}" - Encontrados: ${filtered.length}`); // 👈 Opcional debug
+    } else {
+      setFilteredComics(comics); // Muestra todos si no hay query
+    }
+  }, [comics, query]); // 👈 Re-filtra si cambian cómics o query
+
+  // Handlers para modal agregar (sin cambios)
   const handleAddChange = (e) => {
     setAddForm({ ...addForm, [e.target.name]: e.target.value });
   };
@@ -85,9 +71,12 @@ console.log("DEBUG Home - isAdmin:", isAdmin);
     setAddLoading(false);
   };
 
+  // Lista a mostrar: filtrada o todos
+  const displayComics = filteredComics.length > 0 ? filteredComics : comics;
+
   return (
-    <div className="p-6"> {/* 👈 Padding general para centrar el botón */}
-      {/* 👈 BOTÓN AGREGAR SOLO PARA ADMIN */}
+    <div className="p-6">
+      {/* Botón agregar para admin (sin cambios) */}
       {isAdmin && (
         <div className="flex justify-center mb-6">
           <Button
@@ -101,7 +90,14 @@ console.log("DEBUG Home - isAdmin:", isAdmin);
         </div>
       )}
 
-      {/* 👈 MODAL PARA AGREGAR */}
+      {/* 👈 MENSAJE SI HAY BÚSQUEDA */}
+      {query && (
+        <div className="text-center mb-4">
+          <p className="text-gray-600">Mostrando resultados para: "{query}" ({displayComics.length} cómics)</p>
+        </div>
+      )}
+
+      {/* Modal agregar (sin cambios) */}
       <Dialog open={openAddModal} onClose={() => setOpenAddModal(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Agregar Nuevo Cómic</DialogTitle>
         <DialogContent>
@@ -124,12 +120,18 @@ console.log("DEBUG Home - isAdmin:", isAdmin);
         </DialogActions>
       </Dialog>
 
-      {/* 👈 GRID EXISTENTE INTACTO */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {comics.map((comic) => (
-          <ComicCard key={comic.id} comic={comic} />
-        ))}
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"> {/* 👈 CAMBIO: 2 en sm (tablet), 4 en md (desktop), 5 en lg (grande) */}
+      {displayComics.map((comic) => (
+        <ComicCard key={comic.id} comic={comic} />
+      ))}
+    </div>
+
+      {/* Si no hay resultados */}
+      {query && displayComics.length === 0 && (
+        <div className="text-center mt-8">
+          <p className="text-gray-500">No se encontraron cómics con "{query}". Intenta otra búsqueda.</p>
+        </div>
+      )}
     </div>
   );
 }
