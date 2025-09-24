@@ -18,8 +18,15 @@ export default function Home() {
   // Estados para modal de agregar (sin cambios)
   const [openAddModal, setOpenAddModal] = useState(false);
   const [addForm, setAddForm] = useState({
-    titulo: '', escritor: '', ilustrador: '', sinopsis: '', precio: '', portada: '', urlLectura: ''
-  });
+  titulo: '', 
+  escritor: '', 
+  ilustrador: '', 
+  editorial: '', // 👈 NUEVO: Campo editorial
+  sinopsis: '', 
+  precio: '', 
+  portada: '', 
+  urlLectura: ''
+});
   const [addLoading, setAddLoading] = useState(false);
   const [addError, setAddError] = useState('');
 
@@ -54,22 +61,24 @@ export default function Home() {
     setAddForm({ ...addForm, [e.target.name]: e.target.value });
   };
 
-  const handleAddSubmit = async () => {
-    setAddLoading(true);
-    setAddError('');
-    try {
-      await createComic(addForm);
-      alert('Cómic agregado exitosamente');
-      setOpenAddModal(false);
-      setAddForm({ titulo: '', escritor: '', ilustrador: '', sinopsis: '', precio: '', portada: '', urlLectura: '' });
-      // Recarga la lista
-      const data = await getComics();
-      setComics(data);
-    } catch (err) {
-      setAddError('Error al agregar cómic: ' + (err.response?.data?.message || err.message));
-    }
-    setAddLoading(false);
-  };
+const handleAddSubmit = async () => {
+  setAddLoading(true);
+  setAddError('');
+  try {
+    await createComic(addForm); // 👈 Envía todo, incluyendo editorial
+    alert('Cómic agregado exitosamente');
+    setOpenAddModal(false);
+    setAddForm({ 
+      titulo: '', escritor: '', ilustrador: '', editorial: '', sinopsis: '', precio: '', portada: '', urlLectura: '' // 👈 Reset con editorial
+    });
+    // Recarga la lista
+    const data = await getComics();
+    setComics(data);
+  } catch (err) {
+    setAddError('Error al agregar cómic: ' + (err.response?.data?.message || err.message));
+  }
+  setAddLoading(false);
+};
 
   // Lista a mostrar: filtrada o todos
   const displayComics = filteredComics.length > 0 ? filteredComics : comics;
@@ -99,26 +108,28 @@ export default function Home() {
 
       {/* Modal agregar (sin cambios) */}
       <Dialog open={openAddModal} onClose={() => setOpenAddModal(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Agregar Nuevo Cómic</DialogTitle>
-        <DialogContent>
-          {addError && <Alert severity="error" sx={{ mb: 2 }}>{addError}</Alert>}
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <TextField label="Título" name="titulo" value={addForm.titulo} onChange={handleAddChange} fullWidth required />
-            <TextField label="Escritor" name="escritor" value={addForm.escritor} onChange={handleAddChange} fullWidth required />
-            <TextField label="Ilustrador" name="ilustrador" value={addForm.ilustrador} onChange={handleAddChange} fullWidth required />
-            <TextField label="Sinopsis" name="sinopsis" value={addForm.sinopsis} onChange={handleAddChange} multiline rows={3} fullWidth required />
-            <TextField label="Precio" name="precio" type="number" value={addForm.precio} onChange={handleAddChange} fullWidth required />
-            <TextField label="URL Portada (ej: /images/portada.jpg)" name="portada" value={addForm.portada} onChange={handleAddChange} fullWidth required />
-            <TextField label="URL Lectura (ej: /comics/nombre.cbz)" name="urlLectura" value={addForm.urlLectura} onChange={handleAddChange} fullWidth required />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenAddModal(false)}>Cancelar</Button>
-          <Button onClick={handleAddSubmit} variant="contained" disabled={addLoading}>
-            {addLoading ? <CircularProgress size={24} /> : 'Agregar'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+  <DialogTitle>Agregar Nuevo Cómic</DialogTitle>
+  <DialogContent>
+    {addError && <Alert severity="error" sx={{ mb: 2 }}>{addError}</Alert>}
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <TextField label="Título" name="titulo" value={addForm.titulo} onChange={handleAddChange} fullWidth required />
+      <TextField label="Escritor" name="escritor" value={addForm.escritor} onChange={handleAddChange} fullWidth required />
+      <TextField label="Ilustrador" name="ilustrador" value={addForm.ilustrador} onChange={handleAddChange} fullWidth required />
+      {/* 👈 NUEVO: Campo Editorial */}
+      <TextField label="Editorial" name="editorial" value={addForm.editorial} onChange={handleAddChange} fullWidth />
+      <TextField label="Sinopsis" name="sinopsis" value={addForm.sinopsis} onChange={handleAddChange} multiline rows={3} fullWidth required />
+      <TextField label="Precio" name="precio" type="number" value={addForm.precio} onChange={handleAddChange} fullWidth required />
+      <TextField label="URL Portada (ej: /images/portada.jpg)" name="portada" value={addForm.portada} onChange={handleAddChange} fullWidth required />
+      <TextField label="URL Lectura (ej: /comics/nombre.cbz)" name="urlLectura" value={addForm.urlLectura} onChange={handleAddChange} fullWidth required />
+    </Box>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenAddModal(false)}>Cancelar</Button>
+    <Button onClick={handleAddSubmit} variant="contained" disabled={addLoading}>
+      {addLoading ? <CircularProgress size={24} /> : 'Agregar'}
+    </Button>
+  </DialogActions>
+</Dialog>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"> {/* 👈 CAMBIO: 2 en sm (tablet), 4 en md (desktop), 5 en lg (grande) */}
       {displayComics.map((comic) => (
