@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
       setUser ({
         id: userData.id,
         nombre: userData.nombre,
-        role: userData.rol, // 👈 Usa 'rol' del DB
+        role: userData.rol, 
       });
     } catch (err) {
       // Fallback a decoded si fetch falla

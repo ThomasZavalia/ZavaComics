@@ -21,7 +21,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
   const [loading, setLoading] = useState(false);
   const [isComprado, setIsComprado] = useState(false);
 
-  // 👈 Estados para modales admin
+  //  Estados para modales admin
   const [openEditModal, setOpenEditModal] = useState(false);
   const [editForm, setEditForm] = useState({});
   const [editLoading, setEditLoading] = useState(false);

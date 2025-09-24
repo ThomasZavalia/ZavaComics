@@ -23,7 +23,7 @@ export default function ComicReader({ file }) {
         const data = await response.arrayBuffer();
         const zipContent = await zip.loadAsync(data);
 
-        // 👈 DEBUG: Loggea TODOS los archivos para ver el contenido (puedes quitar si ya no lo necesitas)
+        // DEBUG: Loggea TODOS los archivos para ver el contenido (puedes quitar si ya no lo necesitas)
         console.log("=== CONTENIDO DEL CBZ ===");
         console.log("Archivos totales:", Object.keys(zipContent.files));
         Object.keys(zipContent.files).forEach(name => {

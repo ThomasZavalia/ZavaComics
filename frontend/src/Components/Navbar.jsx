@@ -1,16 +1,16 @@
 
 
-import { Link, useSearchParams } from "react-router-dom"; // 👈 Agregado useSearchParams
+import { Link, useSearchParams } from "react-router-dom"; 
 import { AppBar, Toolbar, Typography, Button, Stack, TextField, InputAdornment } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search"; // 👈 Icono de búsqueda
+import SearchIcon from "@mui/icons-material/Search";
 import { useAuth } from "../Hooks/useAuth";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const [searchParams, setSearchParams] = useSearchParams(); // 👈 Para manejar query ?q=...
-  const query = searchParams.get('q') || ''; // 👈 Lee query actual
+  const [searchParams, setSearchParams] = useSearchParams(); 
+  const query = searchParams.get('q') || ''; 
 
-  // 👈 Handler para búsqueda onChange (actualiza URL en tiempo real)
+  
   const handleSearchChange = (e) => {
     const value = e.target.value;
     if (value) {
@@ -46,7 +46,7 @@ export default function Navbar() {
           ZavaComics
         </Typography>
 
-        {/* 👈 BARRA DE BÚSQUEDA - Centrada, responsive */}
+       
         <TextField
           variant="outlined"
           placeholder="Buscar cómics por título..."
@@ -54,7 +54,7 @@ export default function Navbar() {
           onChange={handleSearchChange}
           size="small"
           sx={{
-            minWidth: { xs: '200px', sm: '300px' }, // Responsive: más ancho en desktop
+            minWidth: { xs: '200px', sm: '300px' }, 
             maxWidth: '400px',
             mx: 2, // Margen horizontal
             '& .MuiOutlinedInput-root': {
@@ -79,7 +79,7 @@ export default function Navbar() {
 
         {/* Botones de navegación (sin Admin) */}
         <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap", justifyContent: "flex-end" }}>
-          {["Home", "Libreria"].map((page) => { // 👈 Removido "Admin"
+          {["Home", "Libreria"].map((page) => { 
             const path = page === "Home" ? "/" : `/${page.toLowerCase()}`;
             return (
               <Button
