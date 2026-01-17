@@ -1,77 +1,4 @@
-/*import { useState } from "react";
-import { useAuth } from "../Hooks/useAuth";
 
-const Register = () => {
-  const { register } = useAuth();
-  const [nombre, setNombre] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await register({ nombre, email, password });
-      alert("Usuario registrado con éxito");
-    } catch (err) {
-      console.error(err);
-      alert("Error al registrar el usuario");
-    }
-    setLoading(false);
-  };
-
-  return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-r from-green-400 via-blue-500 to-purple-500">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-3xl shadow-2xl w-96 flex flex-col items-center space-y-5 transition-transform transform hover:scale-105"
-      >
-        <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
-          Registrarse
-        </h2>
-
-        <input
-          type="text"
-          placeholder="Nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          required
-        />
-
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          required
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-          disabled={loading}
-        >
-          {loading ? "Creando..." : "Crear cuenta"}
-        </button>
-      </form>
-    </div>
-  );
-};
-
-export default Register;
-*/
 import * as React from "react";
 import { useState } from "react";
 import { useAuth } from "../Hooks/useAuth";
@@ -87,7 +14,7 @@ import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 
-// Card centralizado con sombra y padding
+
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -129,7 +56,7 @@ export default function Register() {
 
     try {
       await register({ nombre, email, password });
-      alert("Usuario registrado con éxito"); // luego podrías redirigir a /login
+      alert("Usuario registrado con éxito"); 
     } catch (err) {
       console.error(err);
       setErrorMessage("Error al registrar el usuario");

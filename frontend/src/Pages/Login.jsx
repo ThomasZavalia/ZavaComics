@@ -1,65 +1,4 @@
-// src/pages/Login.jsx
-/*import { useState } from "react";
-import { useAuth } from "../Hooks/useAuth";
 
-const Login = () => {
-  const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    // login espera un objeto { email, password }
-    await login({ email, password });
-    alert("Login exitoso"); // o redirige a otra página
-  } catch (err) {
-    console.error(err);
-    alert("Error: correo o contraseña incorrecta");
-  }
-};
-
-  return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-xl shadow-md w-80"
-      >
-        <h2 className="text-2xl font-bold mb-4 text-center">Iniciar Sesión</h2>
-
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 mb-3 border rounded"
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 mb-3 border rounded"
-          required
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-        >
-          Entrar
-        </button>
-      </form>
-    </div>
-  );
-};
-
-export default Login;
-*/
-
-// src/pages/Login.jsx
 import * as React from "react";
 import { useState } from "react";
 import { useAuth } from "../Hooks/useAuth";
@@ -76,7 +15,7 @@ import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 
-// Card centralizado con sombra y padding
+
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -93,9 +32,9 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
-  position: "relative",       // para cualquier pseudo-elemento
+  position: "relative",       
   width: "100vw",
-  height: "100vh",            // toda la pantalla
+  height: "100vh",            
   minHeight: "100%",
   padding: theme.spacing(2),
   justifyContent: "center",
@@ -119,7 +58,7 @@ export default function Login() {
 
     try {
       await login({ email, password });
-      alert("Login exitoso"); // luego podrías redirigir a /home
+      alert("Login exitoso"); 
       navigate('/');
     } catch (err) {
       console.error("Error en login:", err);

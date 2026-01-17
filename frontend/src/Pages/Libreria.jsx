@@ -21,7 +21,7 @@ export default function Libreria() {
 
       try {
         const res = await api.get("/compras/my");
-        setComics(res.data); // asumimos que devuelve un array de comics
+        setComics(res.data); 
       } catch (err) {
         console.error(err);
         setErrorMessage("Error al cargar tu librería");
@@ -92,7 +92,7 @@ export default function Libreria() {
 
                 <Link
                   to="/leer"
-                  state={{ cbzFile: comic.urlLectura }} // 👈 pasamos la ruta al .cbz/.zip
+                  state={{ cbzFile: comic.urlLectura }} // pasamos la ruta al .cbz/.zip
                   className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
                 >
                   Leer

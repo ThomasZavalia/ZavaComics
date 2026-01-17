@@ -5,7 +5,7 @@ import Libreria from "./Pages/Libreria";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import ComicReaderPage from "./Pages/comicReader";
-import AdminPanel from "./Pages/AdminPanel";
+
 import ComicReaderWrapper from "./Pages/ComicReaderWrapper";
 
 import Navbar from "./Components/Navbar";
@@ -21,7 +21,7 @@ function App() {
         <Route path="/libreria" element={<Libreria />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/admin" element={<AdminPanel />} />
+        
         <Route path="/leer" element={<ComicReaderWrapper />} />
       </Routes>
     </>

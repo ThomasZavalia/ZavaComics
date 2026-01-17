@@ -6,8 +6,8 @@ const comicRoutes = require("./routes/comicRoutes");
 const compraRoutes = require("./routes/compraRoutes");
 
 app.use(cors({
-  origin: "http://localhost:5173", // <-- donde corre tu React
-  credentials: true, // opcional, si manejas cookies
+  origin: "http://localhost:5173", 
+  credentials: true, 
 }));
 app.use(express.json());
 
