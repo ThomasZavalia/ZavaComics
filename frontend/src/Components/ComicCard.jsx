@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const ComicCard = ({ comic }) => {
   return (
     <div className="bg-[#1e1e1e] rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full">
-      {/* Imagen: Sin cambios (altura bien, vertical) */}
+   
       <div className="aspect-[3/4] w-full relative">
         <img
           src={comic.portada}
@@ -13,7 +13,7 @@ const ComicCard = ({ comic }) => {
         />
       </div>
       
-      {/* Contenido: Más compacto */}
+     
       <div className="p-3"> 
         <h3 className="text-base font-semibold text-white truncate mb-1"> 
           {comic.titulo}

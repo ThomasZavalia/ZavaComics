@@ -9,13 +9,13 @@ export default function Home() {
   const { user } = useAuth();
   const isAdmin = user && user.role === 'admin';
 
-  const [searchParams] = useSearchParams(); //  Lee query ?q=...
-  const query = searchParams.get('q') || ''; // Query de búsqueda
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('q') || ''; 
 
   const [comics, setComics] = useState([]);
-  const [filteredComics, setFilteredComics] = useState([]); // 👈 Lista filtrada
+  const [filteredComics, setFilteredComics] = useState([]); 
 
-  // Estados para modal de agregar 
+
   const [openAddModal, setOpenAddModal] = useState(false);
   const [addForm, setAddForm] = useState({
   titulo: '', 
@@ -42,21 +42,21 @@ export default function Home() {
     fetchComics();
   }, []);
 
-  // Filtrar cómics por título (onChange de query o al cargar)
+  
   useEffect(() => {
     if (query) {
       const lowerQuery = query.toLowerCase();
       const filtered = comics.filter(comic =>
-        comic.titulo.toLowerCase().includes(lowerQuery) // 👈 Filtra por título (case insensitive)
+        comic.titulo.toLowerCase().includes(lowerQuery) 
       );
       setFilteredComics(filtered);
-      console.log(`DEBUG Búsqueda: "${query}" - Encontrados: ${filtered.length}`); // 👈 Opcional debug
+      console.log(`DEBUG Búsqueda: "${query}" - Encontrados: ${filtered.length}`); 
     } else {
-      setFilteredComics(comics); // Muestra todos si no hay query
+      setFilteredComics(comics);
     }
-  }, [comics, query]); // Re-filtra si cambian cómics o query
+  }, [comics, query]);
 
-  // Handlers para modal agregar
+
   const handleAddChange = (e) => {
     setAddForm({ ...addForm, [e.target.name]: e.target.value });
   };
@@ -71,7 +71,7 @@ const handleAddSubmit = async () => {
     setAddForm({ 
       titulo: '', escritor: '', ilustrador: '', editorial: '', sinopsis: '', precio: '', portada: '', urlLectura: '' // 👈 Reset con editorial
     });
-    // Recarga la lista
+  
     const data = await getComics();
     setComics(data);
   } catch (err) {
@@ -80,7 +80,7 @@ const handleAddSubmit = async () => {
   setAddLoading(false);
 };
 
-  // Lista a mostrar: filtrada o todos
+
   const displayComics = filteredComics.length > 0 ? filteredComics : comics;
 
   return (
@@ -106,7 +106,7 @@ const handleAddSubmit = async () => {
         </div>
       )}
 
-      {/* Modal agregar */}
+      
       <Dialog open={openAddModal} onClose={() => setOpenAddModal(false)} maxWidth="sm" fullWidth>
   <DialogTitle>Agregar Nuevo Cómic</DialogTitle>
   <DialogContent>

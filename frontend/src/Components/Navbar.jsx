@@ -16,7 +16,7 @@ export default function Navbar() {
     if (value) {
       searchParams.set('q', value);
     } else {
-      searchParams.delete('q'); // Limpia si vacío
+      searchParams.delete('q'); 
     }
     setSearchParams(searchParams);
   };
@@ -25,7 +25,7 @@ export default function Navbar() {
     <AppBar
       position="static"
       sx={{
-        background: "#1e1e1e", // gris oscuro
+        background: "#1e1e1e", 
         px: 3,
       }}
     >
@@ -56,7 +56,7 @@ export default function Navbar() {
           sx={{
             minWidth: { xs: '200px', sm: '300px' }, 
             maxWidth: '400px',
-            mx: 2, // Margen horizontal
+            mx: 2,
             '& .MuiOutlinedInput-root': {
               backgroundColor: '#2c2c2c',
               color: 'white',
@@ -77,7 +77,7 @@ export default function Navbar() {
           }}
         />
 
-        {/* Botones de navegación (sin Admin) */}
+       
         <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap", justifyContent: "flex-end" }}>
           {["Home", "Libreria"].map((page) => { 
             const path = page === "Home" ? "/" : `/${page.toLowerCase()}`;

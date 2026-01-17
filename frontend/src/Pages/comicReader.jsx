@@ -23,8 +23,7 @@ export default function ComicReader({ file }) {
         const data = await response.arrayBuffer();
         const zipContent = await zip.loadAsync(data);
 
-        // DEBUG: Loggea TODOS los archivos para ver el contenido (puedes quitar si ya no lo necesitas)
-        console.log("=== CONTENIDO DEL CBZ ===");
+     
         console.log("Archivos totales:", Object.keys(zipContent.files));
         Object.keys(zipContent.files).forEach(name => {
           const fileObj = zipContent.files[name];
@@ -32,16 +31,16 @@ export default function ComicReader({ file }) {
         });
         console.log("=== FIN CONTENIDO ===");
 
-        // Filtra imágenes: más formatos, ignora carpetas, maneja paths
+        
         const imageFiles = Object.keys(zipContent.files)
           .filter(name => {
             const file = zipContent.files[name];
-            if (file.dir) return false; // Ignora carpetas
-            // Extrae nombre base (sin path de carpetas)
-            const baseName = name.split('/').pop(); // ej: "carpeta/001.jpg" -> "001.jpg"
+            if (file.dir) return false; 
+       
+            const baseName = name.split('/').pop(); 
             return /\.(jpe?g|png|gif|webp|bmp|tiff?)$/i.test(baseName);
           })
-          .map(name => name.split('/').pop()) // Usa solo baseName para sort y async
+          .map(name => name.split('/').pop()) 
           .sort((a, b) => {
             // Orden numérico mejorado
             const numA = parseInt(a.match(/\d+/)?.[0] || 0);
@@ -49,7 +48,7 @@ export default function ComicReader({ file }) {
             return numA - numB;
           });
 
-        console.log("Archivos de imagen encontrados:", imageFiles); // 👈 DEBUG
+        console.log("Archivos de imagen encontrados:", imageFiles); 
 
         if (imageFiles.length === 0) {
           throw new Error(`No se encontraron imágenes en el CBZ. Archivos totales: ${Object.keys(zipContent.files).length}. Verifica extensiones (.jpg, .png, etc.) o recrea el CBZ.`);
@@ -57,11 +56,11 @@ export default function ComicReader({ file }) {
 
         const images = await Promise.all(
           imageFiles.map(async (baseName) => {
-            // Busca el archivo original (con path si lo tiene)
+          
             const originalName = Object.keys(zipContent.files).find(key => key.split('/').pop() === baseName);
             if (!originalName) throw new Error(`Archivo ${baseName} no encontrado en ZIP`);
             const base64 = await zipContent.files[originalName].async("base64");
-            // Detecta MIME type
+            
             const ext = baseName.toLowerCase();
             let mimeType = 'image/jpeg'; // Default
             if (ext.endsWith('.png')) mimeType = 'image/png';
@@ -96,9 +95,9 @@ export default function ComicReader({ file }) {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
   };
 
-  // Función para cerrar (usa history.back o prop onClose si la agregas)
+
   const handleClose = () => {
-    window.history.back(); // O window.close() si es popup, o prop onClose
+    window.history.back(); 
   };
 
   if (loading) return (
@@ -142,7 +141,7 @@ export default function ComicReader({ file }) {
       display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', 
       padding: '20px', boxSizing: 'border-box', overflow: 'hidden', zIndex: 1000 
     }}>
-      {/* Botón Cerrar en esquina superior derecha */}
+
       <button 
         onClick={handleClose} 
         style={{ 
@@ -155,7 +154,7 @@ export default function ComicReader({ file }) {
         ×
       </button>
 
-      {/* Contenedor de la imagen: Centrado vertical/horizontal */}
+      
       <div style={{ 
         flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', 
         width: '100%', height: '100%', padding: '20px', boxSizing: 'border-box' 
@@ -165,7 +164,7 @@ export default function ComicReader({ file }) {
           alt={`Página ${currentPage + 1}`}
           style={{ 
             maxWidth: '90vw', maxHeight: '90vh', 
-            width: 'auto', height: 'auto', // Mantiene proporcion
+            width: 'auto', height: 'auto', 
             objectFit: 'contain',
             boxShadow: '0 4px 8px rgba(0,0,0,0.5)', 
             borderRadius: '8px' 
@@ -174,7 +173,7 @@ export default function ComicReader({ file }) {
         />
       </div>
 
-      {/* Controles en la parte inferior: Centrados y responsive */}
+      
       <div style={{ 
         padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center', 
         gap: '20px', background: 'rgba(0, 0, 0, 0.7)', width: '100%', 

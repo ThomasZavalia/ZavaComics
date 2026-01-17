@@ -35,10 +35,10 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
       const data = await getComicById(id);
       setComic(data);
 
-      // Verificamos si el usuario tiene el comic comprado
+
       if (user) {
         try {
-          const res = await api.get("/compras/my"); // devuelve los comics comprados
+          const res = await api.get("/compras/my"); 
           const comicsComprados = res.data; // array de comics
           const comprado = comicsComprados.some(c => c.id === data.id);
           setIsComprado(comprado);
@@ -53,7 +53,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
 
   if (!comic) return <p className="text-center mt-10">Cargando...</p>;
 
-  // Handlers para editar
+ 
  const handleEditOpen = () => {
   setEditForm({
     titulo: comic.titulo,
@@ -88,13 +88,13 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
     setEditLoading(false);
   };
 
-  // Handler para eliminar
+  
   const handleDelete = async () => {
     setDeleteLoading(true);
     try {
       await deleteComic(id);
       alert('Cómic eliminado exitosamente');
-      navigate('/'); // Vuelve a home
+      navigate('/'); 
     } catch (err) {
       alert('Error al eliminar: ' + (err.response?.data?.message || err.message));
     }
@@ -152,12 +152,11 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
         </p>
         
         
-        <p className="text-sm text-gray-300 leading-relaxed mb-6"> {/* 👈 CAMBIOS: text-sm (más grande), leading-relaxed (interlineado lindo), mb-6 (espacio antes de botones) */}
-          {comic.sinopsis}
+        <p className="text-sm text-gray-300 leading-relaxed mb-6"> 
         </p>
 
       
-        <div className="flex flex-wrap gap-2 items-center mt-6"> {/* 👈 CAMBIO: Agregado mt-6 para espaciado */}
+        <div className="flex flex-wrap gap-2 items-center mt-6">
           {isComprado ? (
             <Button
               variant="contained"
@@ -191,7 +190,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
             </Button>
           )}
 
-          {/* BOTONES ADMIN SOLO SI ES ADMIN  */}
+         
           {isAdmin && (
             <>
               <Button
@@ -216,7 +215,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
       </div>
     </div>
 
-    {/* MODAL PARA EDITAR  */}
+  
    <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)} maxWidth="sm" fullWidth>
       <DialogTitle>Editar Cómic</DialogTitle>
       <DialogContent>
@@ -225,7 +224,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
           <TextField label="Título" name="titulo" value={editForm.titulo || ''} onChange={handleEditChange} fullWidth required />
           <TextField label="Escritor" name="escritor" value={editForm.escritor || ''} onChange={handleEditChange} fullWidth required />
           <TextField label="Ilustrador" name="ilustrador" value={editForm.ilustrador || ''} onChange={handleEditChange} fullWidth required />
-          {/* 👈 NUEVO: Campo Editorial */}
+        
           <TextField label="Editorial" name="editorial" value={editForm.editorial || ''} onChange={handleEditChange} fullWidth />
           <TextField label="Sinopsis" name="sinopsis" value={editForm.sinopsis || ''} onChange={handleEditChange} multiline rows={3} fullWidth required />
           <TextField label="Precio" name="precio" type="number" value={editForm.precio || ''} onChange={handleEditChange} fullWidth required />
@@ -241,7 +240,7 @@ console.log("DEBUG Detail - isAdmin:", isAdmin);
       </DialogActions>
     </Dialog>
 
-    {/* MODAL PARA CONFIRMAR ELIMINAR  */}
+
     <Dialog open={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
       <DialogTitle>¿Estás seguro de eliminar "{comic.titulo}"?</DialogTitle>
       <DialogContent>

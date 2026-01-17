@@ -10,7 +10,7 @@ export default function ComicReaderWrapper() {
    // Captura 'cbzFile' del estado
   const file = cbzFile; 
   
-  // Renombra 
+
   if (!file) return <p>Archivo no encontrado. Verifica que hayas comprado el cómic y navegado correctamente.</p>;
 
   
